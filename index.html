@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paradise Nursery - Tienda de Plantas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #2d5016, #4a7c59);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-btn {
+            color: white;
+            background: none;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-btn:hover, .nav-btn.active {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        .cart-button {
+            background: #f4a261;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=600');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 5rem 0;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .btn-primary {
+            background: #f4a261;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        /* Products */
+        .products-section {
+            padding: 4rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #2d5016;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #666;
+        }
+        
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .filter-btn {
+            padding: 0.7rem 1.5rem;
+            border: 2px solid #2d5016;
+            background: white;
+            color: #2d5016;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .filter-btn.active {
+            background: #2d5016;
+            color: white;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 1.5rem;
+        }
+        
+        .product-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #2d5016;
+        }
+        
+        .product-description {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #f4a261;
+            margin-bottom: 1rem;
+        }
+        
+        .add-to-cart {
+            width: 100%;
+            background: #2d5016;
+            color: white;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .add-to-cart:hover {
+            background: #4a7c59;
+        }
+        
+        .add-to-cart.added {
+            background: #28a745;
+        }
+        
+        /* Cart */
+        .cart-section {
+            padding: 2rem 0;
+            min-height: 60vh;
+        }
+        
+        .empty-cart {
+            text-align: center;
+            padding: 3rem;
+        }
+        
+        .cart-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .cart-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 1rem;
+        }
+        
+        .cart-item-info {
+            flex: 1;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+        }
+        
+        .quantity-btn {
+            background: #f4a261;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .remove-btn {
+            margin-left: 1rem;
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .cart-total {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        /* About */
+        .about-section {
+            padding: 4rem 0;
+            background: white;
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        
+        .about-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2d5016;
+        }
+        
+        .stat-label {
+            color: #666;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #2d5016;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2d5016;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-description {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .cart-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .stats {
+                justify-content: center;
+            }
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <nav class="nav">
+                    <div class="logo">🌿 Paradise Nursery</div>
+                    <div class="nav-links">
+                        <button class="nav-btn active" onclick="showPage('home')">Inicio</button>
+                        <button class="nav-btn" onclick="showPage('products')">Productos</button>
+                        <button class="nav-btn" onclick="showPage('about')">Acerca de</button>
+                    </div>
+                    <button class="cart-button" onclick="showPage('cart')">
+                        🛒 Carrito (<span id="cart-count">0</span>)
+                    </button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Home Page -->
+        <div id="home-page" class="page">
+            <section class="hero">
+                <div class="container">
+                    <h1>Bienvenido a Paradise Nursery</h1>
+                    <p>Descubre nuestra colección de plantas aromáticas y medicinales para tu hogar</p>
+                    <button class="btn-primary" onclick="showPage('products')">
+                        Ver Productos
+                    </button>
+                </div>
+            </section>
+            
+            <section class="products-section">
+                <div class="container">
+                    <h2 class="section-title">¿Por qué elegir Paradise Nursery?</h2>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">🌱</div>
+                            <h3 class="feature-title">Calidad Premium</h3>
+                            <p class="feature-description">Plantas cuidadosamente seleccionadas y cultivadas con los más altos estándares de calidad.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🏠</div>
+                            <h3 class="feature-title">Fácil Cuidado</h3>
+                            <p class="feature-description">Perfectas para interiores, con instrucciones detalladas para mantenerlas saludables.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">💚</div>
+                            <h3 class="feature-title">Beneficios Naturales</h3>
+                            <p class="feature-description">Propiedades aromáticas y medicinales que mejoran tu bienestar y ambiente.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Products Page -->
+        <div id="products-page" class="page hidden">
+            <section class="products-section">
+                <div class="container">
+                    <h2 class="section-title">Nuestras Plantas</h2>
+                    <p class="section-subtitle">Encuentra la planta perfecta para tu espacio</p>
+                    
+                    <div class="filters">
+                        <button class="filter-btn active" onclick="filterProducts('all')">Todas las Plantas</button>
+                        <button class="filter-btn" onclick="filterProducts('aromatic')">Plantas Aromáticas</button>
+                        <button class="filter-btn" onclick="filterProducts('medicinal')">Plantas Medicinales</button>
+                    </div>
+
+                    <div class="products-grid" id="products-grid">
+                        <!-- Products will be loaded here by JavaScript -->
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Cart Page -->
+        <div id="cart-page" class="page hidden">
+            <section class="cart-section">
+                <div class="container">
+                    <h2 class="section-title">Tu Carrito</h2>
+                    <div id="cart-content">
+                        <!-- Cart content will be loaded here by JavaScript -->
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- About Page -->
+        <div id="about-page" class="page hidden">
+            <section class="about-section">
+                <div class="container">
+                    <h2 class="section-title">Acerca de Paradise Nursery</h2>
+                    
+                    <div class="about-content">
+                        <div>
+                            <h3 style="margin-bottom: 1rem; color: #2d5016; font-size: 1.8rem;">Nuestra Historia</h3>
+                            <p style="margin-bottom: 1rem; line-height: 1.6; color: #666;">
+                                Paradise Nursery nació de la pasión por las plantas medicinales y aromáticas. 
+                                Fundada en 2020, comenzamos como un pequeño invernadero familiar con el sueño 
+                                de compartir los beneficios de las plantas naturales.
+                            </p>
+                            <p style="margin-bottom: 1rem; line-height: 1.6; color: #666;">
+                                Hoy, somos reconocidos por nuestra expertise en plantas de interior con propiedades 
+                                terapéuticas. Cada planta en nuestro catálogo ha sido cuidadosamente seleccionada 
+                                por sus beneficios únicos y facilidad de cuidado.
+                            </p>
+                            <p style="margin-bottom: 2rem; line-height: 1.6; color: #666;">
+                                Creemos que cada hogar puede ser un santuario natural. Nuestras plantas no solo 
+                                embellecen los espacios, sino que también aportan bienestar, purificación del aire 
+                                y propiedades curativas naturales.
+                            </p>
+                            
+                            <div class="stats">
+                                <div class="stat">
+                                    <div class="stat-number">2000+</div>
+                                    <div class="stat-label">Plantas vendidas</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-number">500+</div>
+                                    <div class="stat-label">Clientes felices</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-number">4</div>
+                                    <div class="stat-label">Años de experiencia</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <img 
+                                src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400" 
+                                alt="Invernadero Paradise Nursery" 
+                                class="about-image"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <p style="margin-bottom: 0.5rem;">
+                    &copy; 2024 Paradise Nursery. Todos los derechos reservados.
+                </p>
+                <p style="font-size: 0.9rem; opacity: 0.8;">
+                    Transformando hogares con plantas naturales de la más alta calidad.
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Plant data
+        const plantsData = [
+            {
+                id: "1",
+                name: "Albahaca Fresca",
+                description: "Perfecta para cocinar y aromática. Fácil de cuidar en interiores.",
+                price: "15.99",
+                category: "aromatic",
+                imageUrl: "https://leonarditaiberia.com/wp-content/uploads/2021/01/Albahaca.jpg"
+            },
+            {
+                id: "2",
+                name: "Lavanda",
+                description: "Aromática y relajante. Ideal para dormitorios y espacios de relajación.",
+                price: "22.50",
+                category: "aromatic",
+                imageUrl: "https://falconagroalimentaria.com/wp-content/uploads/2025/03/comprar-lavanda-natural.webp"
+            },
+            {
+                id: "3",
+                name: "Romero",
+                description: "Aromático y culinario. Excelente para la cocina y fácil de mantener.",
+                price: "18.75",
+                category: "aromatic",
+                imageUrl: "https://www.diet-health.info/images/recipes/700/1280px-rosemary-7560.jpg"
+            },
+            {
+                id: "4",
+                name: "Menta",
+                description: "Refrescante y aromática. Perfecta para tés e infusiones caseras.",
+                price: "12.99",
+                category: "aromatic",
+                imageUrl: "https://media.admagazine.com/photos/618a61cc51ab72df0a764124/master/pass/83664.jpg"
+            },
+            {
+                id: "5",
+                name: "Aloe Vera",
+                description: "Planta medicinal versátil. Ideal para cuidado de la piel y cicatrización.",
+                price: "25.00",
+                category: "medicinal",
+                imageUrl: "https://cuidateplus.marca.com/sites/default/files/cms/2024-04/aloe-vera.jpg"
+            },
+            {
+                id: "6",
+                name: "Manzanilla",
+                description: "Calmante natural. Perfecta para tés relajantes y propiedades digestivas.",
+                price: "16.50",
+                category: "medicinal",
+                imageUrl: "https://mamabruja.com/wp-content/uploads/2024/03/ioana-cristiana-Mv9J_UThISA-unsplash-2-scaled.jpg"
+            },
+            {
+                id: "7",
+                name: "Eucalipto",
+                description: "Propiedades respiratorias. Excelente para aromaterapia y purificación del aire.",
+                price: "28.99",
+                category: "medicinal",
+                imageUrl: "https://cloudfront-us-east-1.images.arcpublishing.com/eluniverso/VFGSA3NHPBHN7GRDIHYTLHFIFI.jpg"
+            },
+            {
+                id: "8",
+                name: "Caléndula",
+                description: "Antiséptica y curativa. Ideal para cuidado natural de la piel.",
+                price: "19.75",
+                category: "medicinal",
+                imageUrl: "https://sembramos.com.co/wp-content/uploads/2022/12/calendula-planta-pixabay-1200x800.jpg"
+            }
+        ];
+
+        // Cart state
+        let cart = [];
+        let currentFilter = 'all';
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+            updateCartUI();
+        });
+
+        // Navigation
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.add('hidden'));
+            
+            // Show selected page
+            document.getElementById(pageId + '-page').classList.remove('hidden');
+            
+            // Update nav buttons
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Load cart content if cart page
+            if (pageId === 'cart') {
+                loadCartContent();
+            }
+        }
+
+        // Product filtering
+        function filterProducts(category) {
+            currentFilter = category;
+            
+            // Update filter buttons
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            loadProducts();
+        }
+
+        // Load products
+        function loadProducts() {
+            const grid = document.getElementById('products-grid');
+            const filteredPlants = currentFilter === 'all' ? plantsData : plantsData.filter(plant => plant.category === currentFilter);
+            
+            grid.innerHTML = filteredPlants.map(plant => `
+                <div class="product-card">
+                    <img src="${plant.imageUrl}" alt="${plant.name}" class="product-image" />
+                    <div class="product-info">
+                        <h3 class="product-name">${plant.name}</h3>
+                        <p class="product-description">${plant.description}</p>
+                        <div class="product-price">$${plant.price}</div>
+                        <button class="add-to-cart" onclick="addToCart('${plant.id}')">
+                            Agregar al Carrito
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Cart functions
+        function addToCart(plantId) {
+            const plant = plantsData.find(p => p.id === plantId);
+            const existingItem = cart.find(item => item.id === plantId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...plant, quantity: 1 });
+            }
+            
+            updateCartUI();
+            
+            // Visual feedback
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = '✓ Agregado';
+            button.classList.add('added');
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.classList.remove('added');
+            }, 1500);
+        }
+
+        function removeFromCart(plantId) {
+            cart = cart.filter(item => item.id !== plantId);
+            updateCartUI();
+            loadCartContent();
+        }
+
+        function updateQuantity(plantId, newQuantity) {
+            const item = cart.find(item => item.id === plantId);
+            if (item) {
+                if (newQuantity <= 0) {
+                    removeFromCart(plantId);
+                } else {
+                    item.quantity = newQuantity;
+                    updateCartUI();
+                    loadCartContent();
+                }
+            }
+        }
+
+        function updateCartUI() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').textContent = totalItems;
+        }
+
+        function loadCartContent() {
+            const cartContent = document.getElementById('cart-content');
+            
+            if (cart.length === 0) {
+                cartContent.innerHTML = `
+                    <div class="empty-cart">
+                        <p style="font-size: 1.2rem; color: #666;">Tu carrito está vacío</p>
+                        <p style="color: #999; margin-top: 0.5rem;">Agrega algunas plantas para comenzar</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const total = cart.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
+            
+            cartContent.innerHTML = `
+                ${cart.map(item => `
+                    <div class="cart-item">
+                        <img src="${item.imageUrl}" alt="${item.name}" />
+                        <div class="cart-item-info">
+                            <h3>${item.name}</h3>
+                            <p style="color: #666; margin-bottom: 0.5rem;">${item.description}</p>
+                            <p style="font-size: 1.2rem; font-weight: bold; color: #f4a261;">$${item.price}</p>
+                            <div class="quantity-controls">
+                                <button class="quantity-btn" onclick="updateQuantity('${item.id}', ${item.quantity - 1})">-</button>
+                                <span style="margin: 0 1rem; font-weight: bold;">Cantidad: ${item.quantity}</span>
+                                <button class="quantity-btn" onclick="updateQuantity('${item.id}', ${item.quantity + 1})">+</button>
+                                <button class="remove-btn" onclick="removeFromCart('${item.id}')">Eliminar</button>
+                            </div>
+                            <p style="margin-top: 0.5rem; font-weight: bold;">
+                                Subtotal: $${(parseFloat(item.price) * item.quantity).toFixed(2)}
+                            </p>
+                        </div>
+                    </div>
+                `).join('')}
+
+                <div class="cart-total">
+                    <h3 style="font-size: 2rem; margin-bottom: 1rem; color: #2d5016;">
+                        Total: $${total.toFixed(2)}
+                    </h3>
+                    <p style="color: #666; margin-bottom: 1rem;">
+                        ${cart.reduce((sum, item) => sum + item.quantity, 0)} productos en tu carrito
+                    </p>
+                    <button class="btn-primary" style="font-size: 1.2rem; padding: 1rem 2rem;">
+                        Proceder al Pago
+                    </button>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
